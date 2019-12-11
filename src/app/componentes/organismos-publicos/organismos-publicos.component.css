@@ -1,0 +1,12 @@
+table {
+  width: 100%;
+}
+
+/* ::ng-deep .mat-tab-list:first-child {
+  padding-left: calc(35%) ; 
+}
+ */
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+  color:black;
+  background-color: lightblue;
+}

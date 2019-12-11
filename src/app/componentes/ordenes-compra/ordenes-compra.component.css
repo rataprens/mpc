@@ -1,0 +1,12 @@
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* th {
+  overflow: hidden;
+  width: 200px;
+  text-overflow: ellipsis;
+  margin-left: 5vw
+  white-space: nowrap;
+} */

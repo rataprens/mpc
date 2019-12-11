@@ -1,0 +1,25 @@
+<mat-tab-group class="w3-center">
+  <mat-tab>
+      <ng-template mat-tab-label>
+          <span class="aref" style="font-size:13px"><b> Información Compradores </b> </span> &nbsp;
+      </ng-template>
+      <div style="padding:3%">
+          <mat-card>
+                <p> <u>información de Organismos Compradores por su código de Mercado Publico a nivel de unidad de compra. </u> </p>
+            <mat-card-content>
+                <mat-form-field style="margin-top:2vh; width:30vw">
+                  <input matInput [(ngModel)]="ocds_codigo_organismo" placeholder="Ingresa un codigo de organismo" style="width:30vw">
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" (click)="obtenerInformacionOrganismo()">Ok</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+  </mat-tab>
+  <mat-tab >
+      <ng-template mat-tab-label>
+          <span class="aref" style="font-size:13px"><b> Busqueda por Código de Proveedor </b> </span> &nbsp;
+      </ng-template>
+  </mat-tab>
+</mat-tab-group>

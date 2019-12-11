@@ -1,0 +1,6 @@
+{   
+  "/api": {
+    "target": "https://apis.mercadopublico.cl/OCDS/data/comprador/unidad/",
+    "secure": false
+  }
+}

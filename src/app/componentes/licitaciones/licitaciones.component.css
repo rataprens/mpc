@@ -1,0 +1,27 @@
+
+
+/* ::ng-deep .mat-tab-list:first-child {
+  padding-left: calc(2%) ; 
+} */
+
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+  color:black;
+  background-color: lightblue;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+td{
+  max-width: 50px;
+  /* width: 30px; */
+}
+
+th {
+  overflow: hidden;
+  width: 50px;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+}

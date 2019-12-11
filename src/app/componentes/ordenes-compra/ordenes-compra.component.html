@@ -1,0 +1,261 @@
+<mat-tab-group mat-stretch-tabs class="w3-center">
+  <mat-tab >
+    <ng-template mat-tab-label>
+      <span class="aref" style="font-size:13px"><b> Todas las ordenes de compra </b> </span> &nbsp;
+    </ng-template>
+    <div style="padding:3%">
+      <mat-card>
+        <p><u>Listado de todas las ordenes de compra existentes en la plataforma de mercado publico con fecha </u> <b>: {{agnoActual | date: 'fullDate'}}</b> </p>
+        <p>Cantidad de ordenes de compras encontradas: <b>{{cantidad_ordenes}}</b> </p>
+        <mat-card-content>
+            <mat-form-field style="width:20vw">
+              <input matInput type="date" step="width:20vw"  [(ngModel)]="fecha_orden_compra">
+            </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="buscarOrdenCompra()">Ok</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-form-field style="width:32vw">
+      <input matInput type="text" step="width:32vw" placeholder="Busca por Nombre / Codigo" (keyup)="filtroOrdenCompra($event.target.value)">
+    </mat-form-field>
+    <table mat-table [dataSource]="data_orden_compra_agno" class="mat-elevation-z8"  style="margin-top:2vh">
+   
+        <ng-container matColumnDef="Codigo">
+          <th mat-header-cell *matHeaderCellDef > Codigo </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Codigo}} </td>
+        </ng-container>
+       
+        <ng-container matColumnDef="CodigoEstado">
+          <th mat-header-cell *matHeaderCellDef > Codigo Estado </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.CodigoEstado}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef > Nombre </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Nombre}} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns_orden_compra_agno"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns_orden_compra_agno;"></tr>
+    </table>
+    <mat-paginator #paginator_agno [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+  </mat-tab>
+  <mat-tab >
+    <ng-template mat-tab-label>
+      <span class="aref" style="font-size:13px"><b> Busqueda por código de orden </b> </span> &nbsp;
+    </ng-template>
+    <div style="padding:3%">
+        <mat-card>
+          <p><u> La busqueda por código te permite encontrar ordenes de compra de <b>manera específica </b> y con información <b>más detallada</b></u></p>
+          <mat-card-content>
+              <mat-form-field style="width:32vw">
+                <input matInput type="text" step="width:32vw" placeholder="Escribe un codigo de orden de compra" [(ngModel)]="codigo_orden_compra">
+              </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="buscarCodigoOrden()">Ok</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <table mat-table [dataSource]="data_orden_compra_codigo" class="mat-elevation-z8" matSort style="margin-top:2vh">
+     
+          <ng-container matColumnDef="CodigoEstado">
+            <th mat-header-cell *matHeaderCellDef > Codigo estado </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.CodigoEstado}} </td>
+          </ng-container>
+         
+          <ng-container matColumnDef="CodigoLicitacion">
+            <th mat-header-cell *matHeaderCellDef > Codigo Licitación </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.CodigoLicitacion}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="NombreOrganismo">
+            <th mat-header-cell *matHeaderCellDef > Nombre Comprador </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Comprador.NombreOrganismo}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="RutUnidad">
+            <th mat-header-cell *matHeaderCellDef > Rut Comprador </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Comprador.RutUnidad}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Estado">
+            <th mat-header-cell *matHeaderCellDef > Estado Licitación </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Estado}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Categoria">
+            <th mat-header-cell *matHeaderCellDef > Categoria </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Items.Listado['0'].Categoria}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Producto">
+            <th mat-header-cell *matHeaderCellDef > Nombre Producto </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Items.Listado['0'].Producto}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="TotalNeto">
+            <th mat-header-cell *matHeaderCellDef > Total </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.TotalNeto}} </td>
+          </ng-container>
+  
+            
+          <ng-container matColumnDef="RutSucursal">
+            <th mat-header-cell *matHeaderCellDef > Rut Proveedor </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Proveedor.RutSucursal}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="NombreSucursal">
+            <th mat-header-cell *matHeaderCellDef > Nombre Provedoor </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Proveedor.NombreSucursal}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Codigo">
+            <th mat-header-cell *matHeaderCellDef > Codigo Provedoor </th>
+            <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Proveedor.Codigo}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns_orden_compra_codigo"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns_orden_compra_codigo;"></tr>
+      </table>
+      <!-- <mat-paginator #paginator_codigo [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator> -->
+  </mat-tab>
+  <mat-tab >
+    <ng-template mat-tab-label>
+      <span class="aref" style="font-size:13px"><b> Busqueda por estado </b> </span> &nbsp;
+    </ng-template>
+    <div style="padding:3%">
+      <mat-card>
+        <p><u> La busqueda por estado te permite encontrar orden_compra de <b>manera específica </b> y con información <b>más detallada</b></u></p>
+        <mat-card-content>
+            <mat-form-field>
+                <mat-label>Estados</mat-label>
+                <mat-select [(ngModel)]="estado_seleccionado" (selectionChange)="cambiarEstado($event)">
+                  <mat-option *ngFor="let opcion of opciones" [value]="opcion.valor">
+                    {{opcion.nombre}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <mat-form-field style="width:32vw">
+        <input matInput type="text" step="width:32vw" placeholder="Busca por Nombre / Codigo" (keyup)="filtroOrdenComprEstado($event.target.value)">
+      </mat-form-field>
+    <table mat-table [dataSource]="data_orden_compra_estado" class="mat-elevation-z8" matSort style="margin-top:2vh">
+   
+        <ng-container matColumnDef="Codigo">
+          <th mat-header-cell *matHeaderCellDef > Codigo</th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Codigo}} </td>
+        </ng-container>
+       
+        <ng-container matColumnDef="CodigoEstado">
+          <th mat-header-cell *matHeaderCellDef > Codigo Estado </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.CodigoEstado}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef > Nombre </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Nombre}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns_orden_compra_estado"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns_orden_compra_estado;"></tr>
+    </table>
+
+    <mat-paginator #paginator_estado [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+  </mat-tab>
+  <mat-tab >
+  <ng-template mat-tab-label>
+    <span class="aref" style="font-size:13px"><b> Busqueda por código de organismo </b> </span> &nbsp;
+  </ng-template>
+  <div style="padding:3%">
+    <mat-card>
+      <p><u> La busqueda por <b>código de organismo</b> te permite encontrar ordenes de compra de <b>manera específica </b> y con información <b>más detallada</b></u></p>
+      <p>Fecha: <b>{{agnoActual | date:'fullDate'}}</b> </p>
+      <mat-card-content>
+            <mat-form-field style="width:30vw">
+              <input matInput type="text" step="width:30vw" placeholder="Escribe un codigo de organismo" [(ngModel)]="codigo_orden_organismo">
+            </mat-form-field>
+            <mat-form-field style="width:20vw">
+              <input matInput type="date" step="width:20vw"  [(ngModel)]="fecha_organismo">
+            </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="buscarOrdenCompraOrganismo()">Ok</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <mat-form-field style="width:32vw">
+    <input matInput type="text" step="width:32vw" placeholder="Busca por Nombre / Codigo" (keyup)="filtroOrdenCompraOrganismo($event.target.value)">
+  </mat-form-field>
+  <table mat-table [dataSource]="data_orden_compra_organismo" class="mat-elevation-z8" matSort style="margin-top:2vh">
+   
+      <ng-container matColumnDef="Codigo">
+          <th mat-header-cell *matHeaderCellDef > Codigo</th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Codigo}} </td>
+        </ng-container>
+       
+        <ng-container matColumnDef="CodigoEstado">
+          <th mat-header-cell *matHeaderCellDef > Codigo Estado </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.CodigoEstado}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef > Nombre </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Nombre}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns_orden_compra_organismo"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns_orden_compra_organismo;"></tr>
+    </table>
+    <mat-paginator #paginator_organismo [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+</mat-tab>
+<mat-tab >
+  <ng-template mat-tab-label>
+    <span class="aref" style="font-size:13px"><b> Busqueda por código de proveedor </b> </span> &nbsp;
+  </ng-template>
+  <div style="padding:3%">
+    <mat-card>
+      <p><u> La busqueda por <b>código de proveedor</b> te permite encontrar licitaciones de <b>manera específica </b> y con información <b>más detallada</b></u></p>
+      <p>Fecha: <b> {{agnoActual | date:'fullDate'}} </b> </p>
+      <mat-card-content>
+            <mat-form-field style="width:30vw">
+              <input matInput type="text" step="width:30vw" placeholder="Escribe un codigo de proveedor" [(ngModel)]="codigo_orden_proveedor">
+            </mat-form-field>
+            <mat-form-field style="width:20vw">
+              <input matInput type="date" step="width:20vw"  [(ngModel)]="fecha_proveedor">
+            </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="buscarOrdenCompraProveedor()">Ok</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <table mat-table [dataSource]="data_orden_compra_proveedor" class="mat-elevation-z8" matSort style="margin-top:2vh">
+   
+      <ng-container matColumnDef="Codigo">
+          <th mat-header-cell *matHeaderCellDef > Codigo</th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Codigo}} </td>
+        </ng-container>
+       
+        <ng-container matColumnDef="CodigoEstado">
+          <th mat-header-cell *matHeaderCellDef > Codigo Estado </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.CodigoEstado}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef > Nombre </th>
+          <td mat-cell *matCellDef="let ordenCompra"> {{ordenCompra.Nombre}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns_orden_compra_proveedor"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns_orden_compra_proveedor;"></tr>
+    </table>
+    <mat-paginator #paginator_proveedor [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+</mat-tab>
+</mat-tab-group>
